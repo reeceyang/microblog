@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://reeceyang.github.io/luce.css/luce.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <style>
+  </style>
+  <body class="luce-container">
+    <header>
+      <h1>reece’s microblog</h1>
+    </header>
+    <div id="main"></div>
+
+    <footer>
+      <em><p>Made with &lt;3 by <a href="https://github.com/reeceyang">Reece</a>. View <a href="">source</a>.</p></em>
+    </footer>
+  </body>
+</html>
+
+<script>
+var type = window.location.hash.substr(1);
+
+async function load() {
+  let reponse = await fetch("list.json");
+  var postList;
+  if (response.ok) {
+    postList = await response.json()["order"];
+  } else {
+    alert("HTTP-Error: " + response.status);
+    // show an error or 404 page?
+    return;
+  }
+
+  if (type === "") {
+    // TODO: home screen
+  } else if (type === "list") {
+    // TODO: list of all posts
+  } else {
+    // try to display a post
+    let reponse = await fetch(`post/${type}.json`);
+    if (response.ok) {
+      var post = await response.json();
+      var currentIndex = postList.indexOf(Number(type));
+      var nav = `<nav><ul>`;
+      if (currentIndex > 0) {
+        nav += `<li><a id="prev-link" href="#${postList[currentIndex - 1]}">« prev</a></li>`;
+      }
+      nav += `<li><a id="home-link" href="#">home</a></li>`
+      if (currentIndex < postList.length - 1) {
+        nav += `<li><a id="next-link" href="#${postList[currentIndex + 1]}">next »</a></li>`;
+      }
+      nav += `</ul></nav>`;
+      document.getElementById('main').innerHTML += nav +
+      `<section class="post">
+        <p id="date">${post.date}</p>
+        <div id="content">${post.content}</div>
+      </section>
+      <script src="https://utteranc.es/client.js"
+        repo="reeceyang/microblog"
+        issue-term="pathname"
+        label="✨💬✨"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+      </script>`;
+    } else {
+      alert("HTTP-Error: " + response.status);
+    }
+  }
+}
+
+load();
+
+</script>
