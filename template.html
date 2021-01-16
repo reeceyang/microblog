@@ -40,7 +40,7 @@ async function load() {
     // TODO: list of all posts
   } else {
     // try to display a post
-    let reponse = await fetch(`post/${type}.json`);
+    let response = await fetch(`post/${type}.json`);
     if (response.ok) {
       var post = await response.json();
       var currentIndex = postList.indexOf(Number(type));
