@@ -24,7 +24,7 @@
 var type = window.location.hash.substr(1);
 
 async function load() {
-  let reponse = await fetch("list.json");
+  let response = await fetch("list.json");
   var postList;
   if (response.ok) {
     postList = await response.json()["order"];
