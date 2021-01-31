@@ -21,18 +21,19 @@
 </html>
 
 <script>
-var type = window.location.hash.substr(1);
-
 async function load() {
-  let response = await fetch("list.json");
+  var type = window.location.hash.substr(1);
+
   var postList;
-  if (response.ok) {
-    postList = await response.json()["order"];
-  } else {
-    alert("HTTP-Error: " + response.status);
-    // show an error or 404 page?
-    return;
-  }
+  await fetch("list.json").then(response => response.json()).then(data => {postList = data.order});
+
+  // if (response.ok) {
+  //   postList = await response.json()["order"];
+  // } else {
+  //   alert("HTTP-Error: " + response.status);
+  //   // show an error or 404 page?
+  //   return;
+  // }
 
   if (type === "") {
     // TODO: home screen
@@ -40,8 +41,9 @@ async function load() {
     // TODO: list of all posts
   } else {
     // try to display a post
-    let response = await fetch(`post/${type}.json`);
-    if (response.ok) {
+    var post;
+    fetch(`post/${type}.json`).then(response => response.json()).then(data => {post = data});
+    // if (response.ok) {
       var post = await response.json();
       var currentIndex = postList.indexOf(Number(type));
       var nav = `<nav><ul>`;
@@ -65,9 +67,9 @@ async function load() {
         theme="github-light"
         crossorigin="anonymous"
         async></sc` + "ript>";
-    } else {
-      alert("HTTP-Error: " + response.status);
-    }
+    // } else {
+    //   alert("HTTP-Error: " + response.status);
+    // }
   }
 }
 
